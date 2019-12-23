@@ -4,6 +4,10 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const keys = require("./config/keys");
+
+require("./models");
+require("./services/passport");
+
 const { connectDB } = require("./models");
 
 connectDB();
