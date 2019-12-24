@@ -4487,6 +4487,23 @@ var fetchUsers = exports.fetchUsers = function fetchUsers() {
   };
 };
 
+var FETCH_CURRENT_USER = exports.FETCH_CURRENT_USER = "FETCH_CURRENT_USER";
+
+var fetchCurrentUser = exports.fetchCurrentUser = function fetchCurrentUser() {
+  return function (dispatch, getState, api) {
+    return api.get("/current_user").then(function (res) {
+      dispatch({
+        type: FETCH_CURRENT_USER,
+        payload: res
+      });
+
+      return res;
+    }).catch(function (err) {
+      console.log(err);
+    });
+  };
+};
+
 /***/ }),
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -39822,15 +39839,21 @@ var _UsersListPage = __webpack_require__(82);
 
 var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
+var _App = __webpack_require__(102);
+
+var _App2 = _interopRequireDefault(_App);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = [_extends({
-  exact: true,
-  path: "/"
-}, _HomePage2.default), _extends({
-  exact: true,
-  path: "/users"
-}, _UsersListPage2.default)];
+exports.default = [_extends({}, _App2.default, {
+  routes: [_extends({
+    exact: true,
+    path: "/"
+  }, _HomePage2.default), _extends({
+    exact: true,
+    path: "/users"
+  }, _UsersListPage2.default)]
+})];
 
 /***/ }),
 /* 81 */
@@ -40744,10 +40767,15 @@ var _usersReducer = __webpack_require__(101);
 
 var _usersReducer2 = _interopRequireDefault(_usersReducer);
 
+var _authReducer = __webpack_require__(104);
+
+var _authReducer2 = _interopRequireDefault(_authReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
-  users: _usersReducer2.default
+  users: _usersReducer2.default,
+  auth: _authReducer2.default
 });
 
 /***/ }),
@@ -40770,6 +40798,162 @@ exports.default = function () {
   switch (action.type) {
     case _actions.FETCH_USERS:
       return action.payload.data;
+    default:
+      return state;
+  }
+};
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterConfig = __webpack_require__(67);
+
+var _header = __webpack_require__(103);
+
+var _header2 = _interopRequireDefault(_header);
+
+var _actions = __webpack_require__(33);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App(_ref) {
+  var route = _ref.route;
+
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement(_header2.default, null),
+    (0, _reactRouterConfig.renderRoutes)(route.routes)
+  );
+};
+
+exports.default = {
+  component: App,
+  loadData: function loadData(_ref2) {
+    var dispatch = _ref2.dispatch;
+    return dispatch(_actions.fetchCurrentUser);
+  }
+};
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(52);
+
+var _reactRedux = __webpack_require__(23);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header(_ref) {
+  var auth = _ref.auth;
+
+  var authButton = auth ? _react2.default.createElement(
+    "a",
+    { href: "/api/logout" },
+    "Logout"
+  ) : _react2.default.createElement(
+    "a",
+    { href: "/api/auth/google" },
+    "login"
+  );
+
+  return _react2.default.createElement(
+    "header",
+    null,
+    _react2.default.createElement(
+      "div",
+      null,
+      _react2.default.createElement(
+        _reactRouterDom.Link,
+        { to: "/" },
+        "React SSR"
+      )
+    ),
+    _react2.default.createElement(
+      "nav",
+      null,
+      _react2.default.createElement(
+        "ul",
+        null,
+        _react2.default.createElement(
+          "li",
+          null,
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: "/users" },
+            "Users"
+          )
+        ),
+        _react2.default.createElement(
+          "li",
+          null,
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: "/admins" },
+            "Admin"
+          )
+        ),
+        _react2.default.createElement(
+          "li",
+          null,
+          authButton
+        )
+      )
+    )
+  );
+};
+
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var auth = _ref2.auth;
+  return { auth: auth };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _actions = __webpack_require__(33);
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _actions.FETCH_CURRENT_USER:
+      return action.payload.data || false;
     default:
       return state;
   }
