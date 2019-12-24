@@ -4470,19 +4470,11 @@ function useReduxContext() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchUsers = exports.FETCH_USERS = undefined;
-
-var _axios = __webpack_require__(83);
-
-var _axios2 = _interopRequireDefault(_axios);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var FETCH_USERS = exports.FETCH_USERS = "fetch_users";
 
 var fetchUsers = exports.fetchUsers = function fetchUsers() {
-  return function (dispatch) {
-    return _axios2.default.get("https://server-side-rendering-api.herokuapp.com/users").then(function (res) {
+  return function (dispatch, getState, api) {
+    return api.get("/users").then(function (res) {
       dispatch({
         type: FETCH_USERS,
         payload: res
@@ -5024,6 +5016,10 @@ var _reduxThunk = __webpack_require__(68);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
+var _axios = __webpack_require__(83);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 var _reactRedux = __webpack_require__(23);
 
 var _routes = __webpack_require__(80);
@@ -5036,7 +5032,11 @@ var _reducers2 = _interopRequireDefault(_reducers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_reducers2.default, window.INITIAL_STATE, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+var axiosInstance = _axios2.default.create({
+  baseURL: "/api"
+});
+
+var store = (0, _redux.createStore)(_reducers2.default, window.INITIAL_STATE, (0, _redux.applyMiddleware)(_reduxThunk2.default.withExtraArgument(axiosInstance)));
 
 _reactDom2.default.hydrate(_react2.default.createElement(
   _reactRedux.Provider,

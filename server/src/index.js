@@ -11,7 +11,7 @@ app.use(
   "/api",
   proxy("https://server-side-rendering-api.herokuapp.com", {
     proxyReqOptDecorator(opts) {
-      opts.header["x-forwarded-host"] = "localhost:3000";
+      opts.headers["x-forwarded-host"] = "localhost:3000";
       return opts;
     }
   })
@@ -19,7 +19,7 @@ app.use(
 app.use(express.static("public"));
 
 app.get("*", (req, res) => {
-  const store = createStore();
+  const store = createStore(req);
   // return array of component to be rendered
   const promises = matchRoutes(routes, req.path).map(({ route }) => {
     return route.loadData ? route.loadData(store) : null;

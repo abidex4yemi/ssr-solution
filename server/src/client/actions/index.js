@@ -1,10 +1,8 @@
-import axios from "axios";
-
 export const FETCH_USERS = "fetch_users";
 
-export const fetchUsers = () => dispatch => {
-  return axios
-    .get("https://server-side-rendering-api.herokuapp.com/users")
+export const fetchUsers = () => (dispatch, getState, api) => {
+  return api
+    .get("/users")
     .then(res => {
       dispatch({
         type: FETCH_USERS,
