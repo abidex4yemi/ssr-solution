@@ -1,11 +1,21 @@
 import express from "express";
 import { matchRoutes } from "react-router-config";
+import proxy from "express-http-proxy";
 import routes from "./client/routes";
 import renderer from "./helpers/renderer";
 import createStore from "./helpers/createStore";
 
 const app = express();
 
+app.use(
+  "/api",
+  proxy("https://server-side-rendering-api.herokuapp.com", {
+    proxyReqOptDecorator(opts) {
+      opts.header["x-forwarded-host"] = "localhost:3000";
+      return opts;
+    }
+  })
+);
 app.use(express.static("public"));
 
 app.get("*", (req, res) => {
