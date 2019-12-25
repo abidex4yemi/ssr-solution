@@ -1,5 +1,6 @@
 export const FETCH_USERS = "fetch_users";
 export const FETCH_CURRENT_USER = "fetch_current_user";
+export const FETCH_ADMINS = "fetch_admins";
 
 export const fetchUsers = () => (dispatch, getState, api) => {
   return api
@@ -12,9 +13,7 @@ export const fetchUsers = () => (dispatch, getState, api) => {
 
       return res;
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => err);
 };
 
 export const fetchCurrentUser = () => (dispatch, getState, api) => {
@@ -28,7 +27,19 @@ export const fetchCurrentUser = () => (dispatch, getState, api) => {
 
       return res;
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => err);
+};
+
+export const fetchAdmins = () => (dispatch, getState, api) => {
+  return api
+    .get("/admins")
+    .then(res => {
+      dispatch({
+        type: FETCH_ADMINS,
+        payload: res
+      });
+
+      return res;
+    })
+    .catch(err => err);
 };

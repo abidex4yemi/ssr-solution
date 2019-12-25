@@ -4472,6 +4472,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var FETCH_USERS = exports.FETCH_USERS = "fetch_users";
 var FETCH_CURRENT_USER = exports.FETCH_CURRENT_USER = "fetch_current_user";
+var FETCH_ADMINS = exports.FETCH_ADMINS = "fetch_admins";
 
 var fetchUsers = exports.fetchUsers = function fetchUsers() {
   return function (dispatch, getState, api) {
@@ -4483,7 +4484,7 @@ var fetchUsers = exports.fetchUsers = function fetchUsers() {
 
       return res;
     }).catch(function (err) {
-      console.log(err);
+      return err;
     });
   };
 };
@@ -4498,7 +4499,22 @@ var fetchCurrentUser = exports.fetchCurrentUser = function fetchCurrentUser() {
 
       return res;
     }).catch(function (err) {
-      console.log(err);
+      return err;
+    });
+  };
+};
+
+var fetchAdmins = exports.fetchAdmins = function fetchAdmins() {
+  return function (dispatch, getState, api) {
+    return api.get("/admins").then(function (res) {
+      dispatch({
+        type: FETCH_ADMINS,
+        payload: res
+      });
+
+      return res;
+    }).catch(function (err) {
+      return err;
     });
   };
 };
@@ -39846,6 +39862,10 @@ var _NotFoundPage = __webpack_require__(105);
 
 var _NotFoundPage2 = _interopRequireDefault(_NotFoundPage);
 
+var _AdminsListPage = __webpack_require__(107);
+
+var _AdminsListPage2 = _interopRequireDefault(_AdminsListPage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = [_extends({}, _App2.default, {
@@ -39855,7 +39875,10 @@ exports.default = [_extends({}, _App2.default, {
   }, _HomePage2.default), _extends({
     exact: true,
     path: "/users"
-  }, _UsersListPage2.default), _extends({}, _NotFoundPage2.default)]
+  }, _UsersListPage2.default), _extends({
+    exact: true,
+    path: "/admins"
+  }, _AdminsListPage2.default), _extends({}, _NotFoundPage2.default)]
 })];
 
 /***/ }),
@@ -40801,11 +40824,16 @@ var _authReducer = __webpack_require__(104);
 
 var _authReducer2 = _interopRequireDefault(_authReducer);
 
+var _adminsReducer = __webpack_require__(106);
+
+var _adminsReducer2 = _interopRequireDefault(_adminsReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
   users: _usersReducer2.default,
-  auth: _authReducer2.default
+  auth: _authReducer2.default,
+  admins: _adminsReducer2.default
 });
 
 /***/ }),
@@ -41032,6 +41060,171 @@ var NotFoundPage = function NotFoundPage(_ref) {
 
 exports.default = {
   component: NotFoundPage
+};
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _actions = __webpack_require__(33);
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _actions.FETCH_ADMINS:
+      return action.payload.data;
+    default:
+      return state;
+  }
+};
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(23);
+
+var _actions = __webpack_require__(33);
+
+var _requireAuth = __webpack_require__(108);
+
+var _requireAuth2 = _interopRequireDefault(_requireAuth);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AdminsListPage = function AdminsListPage(props) {
+  (0, _react.useEffect)(function () {
+    props.fetchAdmins();
+  }, []);
+
+  var renderAdmins = function renderAdmins() {
+    return props.admins.map(function (admin) {
+      return _react2.default.createElement(
+        "tr",
+        { key: admin.id },
+        _react2.default.createElement(
+          "td",
+          null,
+          admin.name
+        )
+      );
+    });
+  };
+
+  return _react2.default.createElement(
+    "div",
+    { className: "container" },
+    _react2.default.createElement(
+      "div",
+      { style: { marginTop: "100px", textAlign: "center" } },
+      _react2.default.createElement(
+        "h3",
+        null,
+        "All admins"
+      ),
+      _react2.default.createElement(
+        "table",
+        { className: "striped" },
+        _react2.default.createElement(
+          "thead",
+          null,
+          _react2.default.createElement(
+            "tr",
+            null,
+            _react2.default.createElement(
+              "th",
+              null,
+              "Name"
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "tbody",
+          null,
+          renderAdmins()
+        )
+      )
+    )
+  );
+};
+
+var mapStateToProps = function mapStateToProps(_ref) {
+  var admins = _ref.admins;
+  return { admins: admins };
+};
+
+var loadData = function loadData(store) {
+  return store.dispatch((0, _actions.fetchAdmins)());
+};
+
+exports.default = {
+  component: (0, _reactRedux.connect)(mapStateToProps, { fetchAdmins: _actions.fetchAdmins })((0, _requireAuth2.default)(AdminsListPage)),
+  loadData: loadData
+};
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(23);
+
+var _reactRouterDom = __webpack_require__(52);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (Component) {
+  var RequireAuth = function RequireAuth(props) {
+    switch (props.auth) {
+      case null:
+        return _react2.default.createElement(
+          "div",
+          null,
+          "Loading..."
+        );
+      case false:
+        return _react2.default.createElement(_reactRouterDom.Redirect, { to: "/" });
+      default:
+        return _react2.default.createElement(Component, props);
+    }
+  };
+
+  var mapStateToProps = function mapStateToProps(_ref) {
+    var auth = _ref.auth;
+    return { auth: auth };
+  };
+
+  return (0, _reactRedux.connect)(mapStateToProps)(RequireAuth);
 };
 
 /***/ })

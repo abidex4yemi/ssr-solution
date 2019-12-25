@@ -21,13 +21,27 @@ app.use(express.static("public"));
 app.get("*", (req, res) => {
   const store = createStore(req);
   // return array of component to be rendered
-  const promises = matchRoutes(routes, req.path).map(({ route }) => {
-    return route.loadData ? route.loadData(store) : null;
-  });
+  const promises = matchRoutes(routes, req.path)
+    .map(({ route }) => {
+      return route.loadData ? route.loadData(store) : null;
+    })
+    .map(promise => {
+      if (promise) {
+        return new Promise((resolve, reject) => {
+          promise.then(resolve).catch(resolve);
+        });
+      }
+    });
 
   Promise.all(promises).then(() => {
     const context = {};
     const content = renderer(req, store, context);
+
+    if (context.url) {
+      return res.redirect(301, context.url);
+    }
+
+    // Handle page not found
     if (context.notFound) {
       res.status(404);
     }
