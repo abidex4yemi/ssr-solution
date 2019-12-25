@@ -39842,6 +39842,10 @@ var _App = __webpack_require__(102);
 
 var _App2 = _interopRequireDefault(_App);
 
+var _NotFoundPage = __webpack_require__(105);
+
+var _NotFoundPage2 = _interopRequireDefault(_NotFoundPage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = [_extends({}, _App2.default, {
@@ -39851,7 +39855,7 @@ exports.default = [_extends({}, _App2.default, {
   }, _HomePage2.default), _extends({
     exact: true,
     path: "/users"
-  }, _UsersListPage2.default)]
+  }, _UsersListPage2.default), _extends({}, _NotFoundPage2.default)]
 })];
 
 /***/ }),
@@ -39923,9 +39927,13 @@ var UsersListPage = function UsersListPage(props) {
   var renderUsers = function renderUsers() {
     return props.users.map(function (user) {
       return _react2.default.createElement(
-        "li",
+        "tr",
         { key: user.id },
-        user.name
+        _react2.default.createElement(
+          "td",
+          null,
+          user.name
+        )
       );
     });
   };
@@ -39935,16 +39943,33 @@ var UsersListPage = function UsersListPage(props) {
     { className: "container" },
     _react2.default.createElement(
       "div",
-      { style: { marginTop: "150px" } },
+      { style: { marginTop: "100px", textAlign: "center" } },
       _react2.default.createElement(
-        "h2",
+        "h3",
         null,
         "All user's"
       ),
       _react2.default.createElement(
-        "ul",
-        null,
-        renderUsers()
+        "table",
+        { className: "striped" },
+        _react2.default.createElement(
+          "thead",
+          null,
+          _react2.default.createElement(
+            "tr",
+            null,
+            _react2.default.createElement(
+              "th",
+              null,
+              "Name"
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "tbody",
+          null,
+          renderUsers()
+        )
       )
     )
   );
@@ -40966,6 +40991,47 @@ exports.default = function () {
     default:
       return state;
   }
+};
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NotFoundPage = function NotFoundPage(_ref) {
+  var _ref$staticContext = _ref.staticContext,
+      staticContext = _ref$staticContext === undefined ? {} : _ref$staticContext;
+
+  staticContext.notFound = true;
+  return _react2.default.createElement(
+    "div",
+    { className: "container" },
+    _react2.default.createElement(
+      "div",
+      { style: { marginTop: "150px", textAlign: "center" } },
+      _react2.default.createElement(
+        "h1",
+        null,
+        "Ooops, route not found."
+      )
+    )
+  );
+};
+
+exports.default = {
+  component: NotFoundPage
 };
 
 /***/ })

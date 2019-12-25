@@ -9,15 +9,27 @@ const UsersListPage = props => {
 
   const renderUsers = () => {
     return props.users.map(user => {
-      return <li key={user.id}>{user.name}</li>;
+      return (
+        <tr key={user.id}>
+          <td>{user.name}</td>
+        </tr>
+      );
     });
   };
 
   return (
     <div className="container">
-      <div style={{ marginTop: "150px" }}>
-        <h2>All user's</h2>
-        <ul>{renderUsers()}</ul>
+      <div style={{ marginTop: "100px", textAlign: "center" }}>
+        <h3>All user's</h3>
+        <table className="striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+
+          <tbody>{renderUsers()}</tbody>
+        </table>
       </div>
     </div>
   );
