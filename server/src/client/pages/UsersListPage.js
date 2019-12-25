@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
 import { fetchUsers } from "../actions";
 
 const UsersListPage = props => {
@@ -17,8 +18,18 @@ const UsersListPage = props => {
     });
   };
 
+  const head = () => {
+    return (
+      <Helmet>
+        <title>{`${props.users.length} users loaded`}</title>
+        <meta property="og:title" content="Users app" />
+      </Helmet>
+    );
+  };
+
   return (
     <div className="container">
+      {head()}
       <div style={{ marginTop: "100px", textAlign: "center" }}>
         <h3>All user's</h3>
         <table className="striped">
