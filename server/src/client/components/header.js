@@ -11,19 +11,23 @@ const Header = ({ auth }) => {
 
   return (
     <header>
-      <div>
-        <Link to="/">React SSR</Link>
-      </div>
       <nav>
-        <ul>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-          <li>
-            <Link to="/admins">Admin</Link>
-          </li>
-          <li>{authButton}</li>
-        </ul>
+        <div className="container">
+          <div className="nav-wrapper">
+            <Link to="/" className="brand-logo">
+              React SSR
+            </Link>
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+              <li>
+                <Link to="/users">Users</Link>
+              </li>
+              <li>
+                <Link to="/admins">Admin</Link>
+              </li>
+              <li>{authButton}</li>
+            </ul>
+          </div>
+        </div>
       </nav>
     </header>
   );

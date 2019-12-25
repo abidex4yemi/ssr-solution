@@ -4471,6 +4471,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var FETCH_USERS = exports.FETCH_USERS = "fetch_users";
+var FETCH_CURRENT_USER = exports.FETCH_CURRENT_USER = "fetch_current_user";
 
 var fetchUsers = exports.fetchUsers = function fetchUsers() {
   return function (dispatch, getState, api) {
@@ -4486,8 +4487,6 @@ var fetchUsers = exports.fetchUsers = function fetchUsers() {
     });
   };
 };
-
-var FETCH_CURRENT_USER = exports.FETCH_CURRENT_USER = "FETCH_CURRENT_USER";
 
 var fetchCurrentUser = exports.fetchCurrentUser = function fetchCurrentUser() {
   return function (dispatch, getState, api) {
@@ -39875,18 +39874,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var HomePage = function HomePage() {
   return _react2.default.createElement(
     "div",
-    null,
+    { className: "container" },
     _react2.default.createElement(
       "div",
-      null,
-      "Welcome to the component."
-    ),
-    _react2.default.createElement(
-      "button",
-      { onClick: function onClick() {
-          return console.log("You clicked me");
-        } },
-      "Press me!"
+      { style: { marginTop: "150px", textAlign: "center" } },
+      _react2.default.createElement(
+        "h3",
+        null,
+        "Welcome!"
+      ),
+      _react2.default.createElement(
+        "p",
+        null,
+        "Checkout all of our awesome features."
+      )
     )
   );
 };
@@ -39931,16 +39932,20 @@ var UsersListPage = function UsersListPage(props) {
 
   return _react2.default.createElement(
     "div",
-    null,
+    { className: "container" },
     _react2.default.createElement(
-      "h2",
-      null,
-      "All user's"
-    ),
-    _react2.default.createElement(
-      "ul",
-      null,
-      renderUsers()
+      "div",
+      { style: { marginTop: "150px" } },
+      _react2.default.createElement(
+        "h2",
+        null,
+        "All user's"
+      ),
+      _react2.default.createElement(
+        "ul",
+        null,
+        renderUsers()
+      )
     )
   );
 };
@@ -40843,7 +40848,7 @@ exports.default = {
   component: App,
   loadData: function loadData(_ref2) {
     var dispatch = _ref2.dispatch;
-    return dispatch(_actions.fetchCurrentUser);
+    return dispatch((0, _actions.fetchCurrentUser)());
   }
 };
 
@@ -40885,42 +40890,46 @@ var Header = function Header(_ref) {
     "header",
     null,
     _react2.default.createElement(
-      "div",
-      null,
-      _react2.default.createElement(
-        _reactRouterDom.Link,
-        { to: "/" },
-        "React SSR"
-      )
-    ),
-    _react2.default.createElement(
       "nav",
       null,
       _react2.default.createElement(
-        "ul",
-        null,
+        "div",
+        { className: "container" },
         _react2.default.createElement(
-          "li",
-          null,
+          "div",
+          { className: "nav-wrapper" },
           _react2.default.createElement(
             _reactRouterDom.Link,
-            { to: "/users" },
-            "Users"
-          )
-        ),
-        _react2.default.createElement(
-          "li",
-          null,
+            { to: "/", className: "brand-logo" },
+            "React SSR"
+          ),
           _react2.default.createElement(
-            _reactRouterDom.Link,
-            { to: "/admins" },
-            "Admin"
+            "ul",
+            { id: "nav-mobile", className: "right hide-on-med-and-down" },
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                _reactRouterDom.Link,
+                { to: "/users" },
+                "Users"
+              )
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                _reactRouterDom.Link,
+                { to: "/admins" },
+                "Admin"
+              )
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              authButton
+            )
           )
-        ),
-        _react2.default.createElement(
-          "li",
-          null,
-          authButton
         )
       )
     )

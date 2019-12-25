@@ -14,9 +14,11 @@ const UsersListPage = props => {
   };
 
   return (
-    <div>
-      <h2>All user's</h2>
-      <ul>{renderUsers()}</ul>
+    <div className="container">
+      <div style={{ marginTop: "150px" }}>
+        <h2>All user's</h2>
+        <ul>{renderUsers()}</ul>
+      </div>
     </div>
   );
 };

@@ -2,9 +2,11 @@ import React from "react";
 
 const HomePage = () => {
   return (
-    <div>
-      <div>Welcome to the component.</div>
-      <button onClick={() => console.log("You clicked me")}>Press me!</button>
+    <div className="container">
+      <div style={{ marginTop: "150px", textAlign: "center" }}>
+        <h3>Welcome!</h3>
+        <p>Checkout all of our awesome features.</p>
+      </div>
     </div>
   );
 };

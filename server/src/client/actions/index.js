@@ -1,4 +1,5 @@
 export const FETCH_USERS = "fetch_users";
+export const FETCH_CURRENT_USER = "fetch_current_user";
 
 export const fetchUsers = () => (dispatch, getState, api) => {
   return api
@@ -15,8 +16,6 @@ export const fetchUsers = () => (dispatch, getState, api) => {
       console.log(err);
     });
 };
-
-export const FETCH_CURRENT_USER = "FETCH_CURRENT_USER";
 
 export const fetchCurrentUser = () => (dispatch, getState, api) => {
   return api
