@@ -39868,6 +39868,11 @@ var _AdminsListPage2 = _interopRequireDefault(_AdminsListPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Note: we can no more uses our default
+// React routing set up since we want to
+// cater for server side rendering
+// That's why we export array of routes and it's component
+
 exports.default = [_extends({}, _App2.default, {
   routes: [_extends({
     exact: true,

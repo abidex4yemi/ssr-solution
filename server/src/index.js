@@ -7,6 +7,9 @@ import createStore from "./helpers/createStore";
 
 const app = express();
 
+// fool the browser such that when making request from
+// the server it looks like it's from the browser
+// user proxy
 app.use(
   "/api",
   proxy("http://react-ssr-api.herokuapp.com", {
@@ -26,6 +29,8 @@ app.get("*", (req, res) => {
       return route.loadData ? route.loadData(store) : null;
     })
     .map(promise => {
+      // keep our ui from crashing if user not logged in
+      // and react has yet no hydrate
       if (promise) {
         return new Promise((resolve, reject) => {
           promise.then(resolve).catch(resolve);
@@ -37,6 +42,9 @@ app.get("*", (req, res) => {
     const context = {};
     const content = renderer(req, store, context);
 
+    // Redirect to root / if user not logged in
+    // we need to use context because on the server
+    // react-router-dom works differently
     if (context.url) {
       return res.redirect(301, context.url);
     }
